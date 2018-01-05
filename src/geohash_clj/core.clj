@@ -1,26 +1,21 @@
 (ns geohash-clj.core)
 
-(def base32 (zipmap "0123456789bcdefghjkmnpqrstuvwxyz" (range)))
+(def base32-chars "0123456789bcdefghjkmnpqrstuvwxyz")
+(def base32->int (zipmap base32-chars (range)))
+(def int->base32 (zipmap (range) base32-chars))
 
-
-(defn zero-pad [s]
-  (let [n (- 5 (count s))
-        col (map #(- (int %) 48) s)]
-    (concat (repeat n 0) col)))
+(defn int->bit-col [n]
+  (reduce #(cons (if (bit-test n %2) 1 0) %1) () (range 5)))
 
 
 (defn geohash->bits [geohash]
-  (when (every? #(base32 %) geohash)
-    (mapcat
-     #(->> (base32 %)
-           (Integer/toBinaryString)
-           (zero-pad))
-     geohash)))
+  (when (every? #(base32->int %) geohash)
+    (mapcat #(int->bit-col (base32->int %)) geohash)))
 
 
 (defn separate [s]
   (let [cols (partition 2 s)]
-    (list (map first cols) (map last cols))))
+    (list (map last cols) (map first cols))))
 
 
 (defn locate [[min-loc max-loc] col]
@@ -35,4 +30,4 @@
 
 (defn decode [geohash]
   (let [[lat lon] (separate (geohash->bits geohash))]
-   [(locate [-180 180] lat) (locate [-90 90] lon)]))
+    [(locate [-90 90] lat) (locate [-180 180] lon)]))
