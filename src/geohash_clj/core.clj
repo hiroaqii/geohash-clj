@@ -24,10 +24,23 @@
       [(float min-loc) (float max-loc)]
       (recur (if (zero? (first col)) [min-loc mid] [mid max-loc]) (rest col)))))
 
-
 (defn encode [lat lon])
 
 
 (defn decode [geohash]
   (let [[lat lon] (separate (geohash->bits geohash))]
     [(locate [-90 90] lat) (locate [-180 180] lon)]))
+
+
+(defn int-loc->bit-col-loc [loc min-loc max-loc size]
+  (loop [min-loc min-loc
+         max-loc max-loc
+         size size
+         ret []]
+    (let [mid-loc (/ (+ min-loc max-loc) 2)]
+      (if (zero? size)
+        ret
+        (if (< mid-loc loc)
+          (recur mid-loc max-loc (dec size) (conj ret 1))
+          (recur min-loc mid-loc (dec size) (conj ret 0)))))))
+
