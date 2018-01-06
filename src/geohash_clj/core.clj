@@ -24,8 +24,6 @@
       [(float min-loc) (float max-loc)]
       (recur (if (zero? (first col)) [min-loc mid] [mid max-loc]) (rest col)))))
 
-(defn encode [lat lon])
-
 
 (defn decode [geohash]
   (let [[lat lon] (separate (geohash->bits geohash))]
@@ -44,3 +42,14 @@
           (recur mid-loc max-loc (dec size) (conj ret 1))
           (recur min-loc mid-loc (dec size) (conj ret 0)))))))
 
+
+(defn bit-col->int [col]
+  (loop [col col
+         n (dec (count col))
+         ret 0]
+    (if (empty? col)
+      ret
+      (recur (rest col) (dec n) (if (zero? (first col)) ret (bit-flip ret n))))))
+
+
+(defn encode [lat lon])
