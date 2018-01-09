@@ -21,7 +21,7 @@
 (defn locate [[min-loc max-loc] col]
   (let [mid ( / (+ min-loc max-loc) 2)]
     (if (empty? col)
-      [(float min-loc) (float max-loc)]
+      (float mid)
       (recur (if (zero? (first col)) [min-loc mid] [mid max-loc]) (rest col)))))
 
 
