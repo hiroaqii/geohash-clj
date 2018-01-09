@@ -52,4 +52,14 @@
       (recur (rest col) (dec n) (if (zero? (first col)) ret (bit-flip ret n))))))
 
 
-(defn encode [lat lon])
+(defn encode [lat lon size]
+  (let [size (min size 12)
+        lat-size (quot (* 5 size) 2)
+        lon-size (if (even? size) lat-size (inc lat-size))
+        lat-bits (int-loc->bit-col-loc lat -90 90 lat-size)
+        lon-bits (int-loc->bit-col-loc lon -180 180 lon-size)]
+    (->> (interleave lon-bits lat-bits)
+         (partition 5)
+         (map bit-col->int)
+         (map int->base32)
+         (apply str))))
