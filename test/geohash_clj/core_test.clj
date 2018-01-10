@@ -38,3 +38,9 @@
   (is (= [78.75 84.375](locate [-90 90] [1 1 1 1 0]))))
 
 
+(deftest test-bit-col->int
+  (is (= (bit-col->int [0 0 0 0 0]) 0))
+  (is (= (bit-col->int [0 0 1 0 0]) 4))
+  (is (= (bit-col->int [0 1 0 0 1]) 9))
+  (is (= (bit-col->int [1 0 0 0 0]) 16))
+  (is (= (bit-col->int [1 1 1 1 1]) 31)))
