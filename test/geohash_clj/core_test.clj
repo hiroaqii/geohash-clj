@@ -37,6 +37,8 @@
   (is (= [78.75 90.0  ](locate [-90 90] [1 1 1 1])))
   (is (= [78.75 84.375](locate [-90 90] [1 1 1 1 0]))))
 
+(deftest test-int-loc->bit-col-loc
+  (is (= (int-loc->bit-col-loc 42.583 -90 90 10) [1 0 1 1 1 1 0 0 1 0])))
 
 (deftest test-bit-col->int
   (is (= (bit-col->int [0 0 0 0 0]) 0))
