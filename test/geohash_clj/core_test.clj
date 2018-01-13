@@ -46,3 +46,11 @@
   (is (= (bit-col->int [0 1 0 0 1]) 9))
   (is (= (bit-col->int [1 0 0 0 0]) 16))
   (is (= (bit-col->int [1 1 1 1 1]) 31)))
+
+
+(deftest test-encode
+  (is (= (encode 57.64911,10.40744 2) "u4"))
+  (is (= (encode 57.64911,10.40744 4) "u4pr"))
+  (is (= (encode 57.64911,10.40744 6) "u4pruy"))
+  (is (= (encode 57.64911,10.40744 8) "u4pruydq"))
+  (is (= (encode 57.64911,10.40744 10) "u4pruydqqv")))
