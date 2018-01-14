@@ -48,9 +48,20 @@
   (is (= (bit-col->int [1 1 1 1 1]) 31)))
 
 
+(deftest test-merge-col
+  (is (= (merge-col [1 2 3] [4 5 6]) [4 1 5 2 6 3]))
+  (is (= (merge-col [1 2 3] [4 5 6 7]) [4 1 5 2 6 3 7])))
+
+;https://en.wikipedia.org/wiki/Geohash
 (deftest test-encode
+  (is (= (encode 57.64911,10.40744 1) "u"))
   (is (= (encode 57.64911,10.40744 2) "u4"))
+  (is (= (encode 57.64911,10.40744 3) "u4pr"))
   (is (= (encode 57.64911,10.40744 4) "u4pr"))
+  (is (= (encode 57.64911,10.40744 5) "u4pru"))
   (is (= (encode 57.64911,10.40744 6) "u4pruy"))
+  (is (= (encode 57.64911,10.40744 7) "u4pruyd"))
   (is (= (encode 57.64911,10.40744 8) "u4pruydq"))
-  (is (= (encode 57.64911,10.40744 10) "u4pruydqqv")))
+  (is (= (encode 57.64911,10.40744 9) "u4pruydqq"))
+  (is (= (encode 57.64911,10.40744 10) "u4pruydqqv"))
+  (is (= (encode 57.64911,10.40744 11) "u4pruydqqvj")))
